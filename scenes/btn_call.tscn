@@ -1,0 +1,65 @@
+[gd_scene load_steps=8 format=3 uid="uid://vp4tfhbuiu5s"]
+
+[ext_resource type="PackedScene" uid="uid://djflt6ptebaoy" path="res://models/btn_call.glb" id="1_dloyb"]
+[ext_resource type="Script" uid="uid://byd1j6kl3oo1r" path="res://scripts/btn_call.gd" id="1_ifbje"]
+[ext_resource type="AudioStream" uid="uid://48xsryjox7dj" path="res://mp3/off-button-on-table-lamp.mp3" id="2_vxja4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jqvc4"]
+size = Vector3(3.4343262, 1.7227402, 1.501709)
+
+[sub_resource type="Animation" id="Animation_jqvc4"]
+resource_name = "click_btn"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("btn_call:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-5.008115, -1.0948391, 0), Vector3(-5.008115, -1.0948391, -0.29820418), Vector3(-5.008115, -1.0948391, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ifbje"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("btn_call:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-5.008115, -1.0948391, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ekmgt"]
+_data = {
+&"RESET": SubResource("Animation_ifbje"),
+&"click_btn": SubResource("Animation_jqvc4")
+}
+
+[node name="btn_call" type="StaticBody3D"]
+script = ExtResource("1_ifbje")
+
+[node name="btn_call" parent="." instance=ExtResource("1_dloyb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.008115, -1.0948391, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0057373047, -0.0028877258, 0.0045166016)
+shape = SubResource("BoxShape3D_jqvc4")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ekmgt")
+}
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_vxja4")
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

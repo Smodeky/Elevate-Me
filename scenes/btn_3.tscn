@@ -1,0 +1,65 @@
+[gd_scene load_steps=8 format=3 uid="uid://b24d0ucboax5m"]
+
+[ext_resource type="Script" uid="uid://bx7ysi3hw1a6b" path="res://scripts/btn_3.gd" id="1_2pejc"]
+[ext_resource type="AudioStream" uid="uid://48xsryjox7dj" path="res://mp3/off-button-on-table-lamp.mp3" id="1_owoew"]
+[ext_resource type="PackedScene" uid="uid://y4bxjb077yom" path="res://models/btn_3.glb" id="2_kcpjr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kcpjr"]
+size = Vector3(3.4343262, 1.7227402, 1.501709)
+
+[sub_resource type="Animation" id="Animation_kcpjr"]
+resource_name = "btn_3"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("btn_3:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-5.008, -3.102, 0), Vector3(-5.008, -3.102, -0.4), Vector3(-5.008, -3.102, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_2pejc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("btn_3:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-5.008, -3.102, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7tsv5"]
+_data = {
+&"RESET": SubResource("Animation_2pejc"),
+&"btn_3": SubResource("Animation_kcpjr")
+}
+
+[node name="btn_3" type="StaticBody3D"]
+script = ExtResource("1_2pejc")
+
+[node name="btn_3" parent="." instance=ExtResource("2_kcpjr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.008, -3.102, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0057373047, -0.0028877258, 0.0045166016)
+shape = SubResource("BoxShape3D_kcpjr")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("1_owoew")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_7tsv5")
+}
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
